@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gato Aleatório</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
+        }
+        .error {
+            color: red;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img id="cat-image" alt="Imagem aleatória de gato">
+        <p id="error-message" class="error"></p>
+    </div>
+    <script>
+        async function fetchCatImage() {
+            const url = 'https://api.thecatapi.com/v1/images/search';
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Não foi possível obter a imagem do gato.');
+                }
+                const data = await response.json();
+                const catImage = document.getElementById('cat-image');
+                const errorMessage = document.getElementById('error-message');
+
+                // Limpar mensagem de erro
+                errorMessage.textContent = '';
+
+                // Exibir imagem
+                catImage.src = data[0].url;
+            } catch (error) {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = `Erro: ${error.message}`;
+            }
+        }
+
+        // Carregar a imagem ao carregar a página
+        window.onload = fetchCatImage;
+    </script>
+</body>
+</html>
